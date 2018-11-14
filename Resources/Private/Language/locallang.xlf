@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<xliff version="1.0">
+    <file source-language="en" datatype="plaintext" original="messages" product-name="publications"
+          date="2017-11-12T14:06:56+00:00">
+        <header/>
+        <body>
+            <trans-unit id="flux.publicationlist">
+                <source>Publicationlist</source>
+            </trans-unit>
+            <trans-unit id="flux.publicationlist.description">
+                <source>List of Publications of a Workgroup</source>
+            </trans-unit>
+
+            <!-- Fields -->
+            <trans-unit id="flux.publicationlist.fields.settings.showNumResults">
+                <source>Show Number of Results?</source>
+            </trans-unit>
+            <trans-unit id="flux.publicationlist.fields.settings.compact">
+                <source>Show as Compact output?</source>
+            </trans-unit>
+            <trans-unit id="flux.publicationlist.fields.settings.compactAuthors">
+                <source>Show authorlist compact?</source>
+            </trans-unit>
+            <trans-unit id="flux.publicationlist.fields.settings.pubTypeFilter">
+                <source>Publication types to show</source>
+            </trans-unit>
+            <trans-unit id="flux.publicationlist.fields.settings.thesisTypeFilter">
+                <source>Thesis types to show</source>
+            </trans-unit>
+            <trans-unit id="flux.publicationlist.fields.settings.affiliations">
+                <source>Affiliations to show</source>
+            </trans-unit>
+            <trans-unit id="flux.publicationlist.fields.settings.authorFilter">
+                <source>Filter authors</source>
+            </trans-unit>
+            <trans-unit id="flux.publicationlist.fields.settings.titleFilter">
+                <source>Title Filter</source>
+            </trans-unit>
+            <trans-unit id="flux.publicationlist.fields.settings.keywordFilter">
+                <source>Keyword Filter</source>
+            </trans-unit>
+            <trans-unit id="flux.publicationlist.fields.settings.orderBy">
+                <source>Order By</source>
+            </trans-unit>
+            <trans-unit id="flux.publicationlist.fields.settings.splitType">
+                <source>Split by Type?</source>
+            </trans-unit>
+            <trans-unit id="flux.publicationlist.fields.settings.splitYears">
+                <source>Split by Years?</source>
+            </trans-unit>
+
+            <!-- Sheets -->
+            <trans-unit id="flux.publicationlist.sheets.def">
+                <source>Definitions</source>
+            </trans-unit>
+            <trans-unit id="flux.publicationlist.sheets.order">
+                <source>Sorting</source>
+            </trans-unit>
+            <trans-unit id="flux.publicationlist.sheets.filters">
+                <source>Filter Rules</source>
+            </trans-unit>
+
+        </body>
+    </file>
+</xliff>

@@ -1,0 +1,52 @@
+{namespace ph2=Ph2\Publications\ViewHelpers}
+<span xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers" xmlns:ph2="Ph2\Publications\ViewHelpers">
+
+    <f:if condition="{pub.journal}">
+        <f:if condition="{pub.short_title}">
+            <f:then>
+                <span class="title">{pub.short_title}</span>
+            </f:then>
+            <f:else>
+                <span class="title">{pub.journal_title}</span>
+            </f:else>
+        </f:if>
+        <f:if condition="{pub.volume}">
+            <span class="vol">, <strong>{pub.volume}</strong></span>
+        </f:if>
+        <f:if condition="{pub.number}">
+            <span class="number">, {pub.number}</span>
+        </f:if>
+        <f:if condition="{pub.pages}">
+            <span class="pages">, <f:format.html parseFuncTSPath="lib.parseFunc">{pub.pages}</f:format.html></span>
+        </f:if>
+    </f:if>
+
+    <f:if condition="{pub.editor}">
+        <span class="editor">, <f:format.html parseFuncTSPath="lib.parseFunc">{pub.editor}</f:format.html></span>
+    </f:if>
+    <f:if condition="{pub.booktitle}">
+        <span class="booktitle">, <f:format.html parseFuncTSPath="lib.parseFunc">{pub.booktitle}</f:format.html></span>
+    </f:if>
+    <f:if condition="{pub.series}">
+        <span class="series">, <f:format.html parseFuncTSPath="lib.paseriesseFunc">{pub.series}</f:format.html></span>
+    </f:if>
+    <f:if condition="{pub.publisher}">
+        <span class="publisher">, <f:format.html parseFuncTSPath="lib.parseFunc">{pub.publisher}</f:format.html></span>
+    </f:if>
+
+    <f:if condition="{pub.thesistype}">
+        <span class="thesistype">, <ph2:publicationType pubType="{pub.type}" thesisType="{pub.thesistype}"/></span>
+        <f:if condition="{pub.school}">
+            <span class="school">, <f:format.html parseFuncTSPath="lib.parseFunc">{pub.school}</f:format.html></span>
+        </f:if>
+    </f:if>
+
+    <f:if condition="{pub.address}">
+        <span class="address">, <f:format.html parseFuncTSPath="lib.parseFunc">{pub.address}</f:format.html></span>
+    </f:if>
+    <f:if condition="{pub.howpulished}">
+        <span class="howpulished">, <f:format.html parseFuncTSPath="lib.parseFunc">{pub.howpulished}</f:format.html></span>
+    </f:if>
+    <span class="year">, <f:format.html parseFuncTSPath="lib.parseFunc">{pub.year}</f:format.html></span>
+
+</span>

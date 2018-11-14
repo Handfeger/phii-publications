@@ -1,0 +1,195 @@
+{namespace ph2=Ph2\Publications\ViewHelpers}
+
+<div xmlns:f="http://typo3.org/ns/TYPO3/Fluid/ViewHelpers" xmlns:flux="http://typo3.org/ns/FluidTYPO3/Flux/ViewHelpers"
+     xmlns:v="http://typo3.org/ns/FluidTYPO3/Vhs/ViewHelpers"
+     xmlns:ph2="Ph2\Publications\ViewHelpers"
+     xmlns="http://www.w3.org/1999/xhtml"
+     lang="en">
+
+    <f:layout name="Content"/>
+
+    <f:section name="Configuration">
+        <flux:form id="publicationlist" localLanguageFileRelativePath="/Resources/Private/Language/locallang.xlf">
+            <!--Options-->
+            <flux:form.option name="group" value="PHII"/>
+            <flux:form.option.icon value="/typo3conf/ext/publications/ext_icon.gif"/>
+            <flux:form.option name="Fluidcontent" value="{sorting: 1}"/>
+
+            <!--Fields-->
+            <!-- Def -->
+            <flux:form.sheet name="def">
+                <flux:field.checkbox name="settings.showNumResults"/>
+                <flux:field.checkbox name="settings.compact"/>
+                <flux:field.checkbox name="settings.compactAuthors"/>
+            </flux:form.sheet>
+            <!-- Filters -->
+            <flux:form.sheet name="filters">
+                <flux:field.select name="settings.pubTypeFilter"
+                                   items="{
+                                        1:'Article'
+                                        2:'Thesis'
+                                        3:'Proceedings'
+                                        4:'In Proceedings'
+                                        5:'Book'
+                                        6:'Article in a Book'
+                                        7:'In a collection'
+                                        8:'Manual'
+                                        9:'Techreport'
+                                        10:'Booklet'
+                                        11:'Unpublished'
+                                        12:'Misc'
+                                      }"
+                                   renderType="selectMultipleSideBySide"
+                                   minItems="1"
+                                   maxItems="12"
+                                   multiple="1"
+                                   size="5"
+                />
+                <flux:field.select name="settings.thesisTypeFilter"
+                                   renderType="selectMultipleSideBySide"
+                                   minItems="1"
+                                   maxItems="5"
+                                   multiple="true"
+                                   size="5"
+                                   items="{
+                                        1:'PhD thesis'
+                                        2:'Diploma thesis'
+                                        3:'Master thesis'
+                                        4:'Bachelor thesis'
+                                        5:'Staatsexamens thesis'
+                                      }"
+                />
+                <flux:field.select name="settings.affiliations"
+                                   renderType="selectMultipleSideBySide"
+                                   minItems="0"
+                                   maxItems="100"
+                                   items="{}"
+                                   itemsProcFunc="Ph2\Publications\Content\Affiliations->affiliationList"
+                                   size="5"
+                />
+                <flux:field.input name="settings.authorFilter"/>
+                <flux:field.input name="settings.titleFilter"/>
+                <flux:field.input name="settings.keywordFilter"/>
+            </flux:form.sheet>
+            <!-- ORDER -->
+            <flux:form.sheet name="order">
+                <flux:field.select name="settings.orderBy"
+                                   items="{
+                                       0:'Year, Month'
+                                       1:'Year, PublishStatus, Month'
+                                   }"
+                />
+                <flux:field.checkbox name="settings.splitType"/>
+                <flux:field.checkbox name="settings.splitYears"/>
+            </flux:form.sheet>
+        </flux:form>
+    </f:section>
+
+    <f:section name="Preview">
+        Publications
+    </f:section>
+
+    <f:section name="Main">
+        <ph2:publicationConfig
+                pubTypeFilter="{settings.pubTypeFilter}"
+                thesisTypeFilter="{settings.thesisTypeFilter}"
+                affiliationsFilter="{settings.affiliations}"
+                authorFilter="{settings.authorFilter}"
+                titleFilter="{settings.titleFilter}"
+                keywordFilter="{settings.keywordFilter}"
+                splitType="{settings.splitType}"
+                orderBy="{settings.order}"
+        />
+
+        <f:if condition="{settings.showNumResults}">
+            <strong>Listing {ph2:publicationRows()} publications</strong>
+        </f:if>
+        <v:variable.set name="currentYear" value="0"/>
+        <v:variable.set name="currentType" value=""/>
+        <v:variable.set name="currentThesisType" value=""/>
+        <div class="publications uzk15__editorblock">
+            <f:for each="{ph2:publication()}" as="pub">
+                <f:if condition="{settings.splitType}">
+                    <f:if condition="{pub.type}==2">
+                        <f:then>
+                            <f:if condition="{currentThesisType}!={pub.thesistype}">
+                                <h2>
+                                    <ph2:publicationType pubType="{pub.type}" thesisType="{pub.thesistype}"/>
+                                </h2>
+                            </f:if>
+                        </f:then>
+                        <f:else>
+                            <f:if condition="{currentType}!={pub.type}">
+                                <h2>
+                                    <ph2:publicationType pubType="{pub.type}" thesisType="{pub.thesistype}"/>
+                                </h2>
+                            </f:if>
+                        </f:else>
+                    </f:if>
+                </f:if>
+                <f:if condition="{settings.splitYears}">
+                    <f:if condition="{currentYear}!={pub.year}">
+                        <h3>{pub.year}</h3>
+                    </f:if>
+                </f:if>
+                <v:variable.set name="currentType" value="{pub.type}"/>
+                <v:variable.set name="currentThesisType" value="{pub.thesistype}"/>
+                <v:variable.set name="currentYear" value="{pub.year}"/>
+
+                <p class="publication">
+                    <v:format.eliminate whitespaceBetweenHtmlTags="true">
+
+                        <v:variable.set name="authors"
+                                        value="{v:iterator.explode(content:'{pub.author}', glue:' and ')}"/>
+                        <span class="authors"><v:iterator.implode glue=", " content="{authors}"/></span>
+                        <!-- TODO author 1, author 2 and author 3 in non compact mode! -->
+
+
+                        <ph2:publicationSeparator compact="{settings.compact}"/>
+
+                        <span class="title"><f:format.html
+                                parseFuncTSPath="lib.parseFunc"><i>{pub.title}</i></f:format.html></span>
+
+                        <ph2:publicationSeparator compact="{settings.compact}"/>
+
+                        <f:if condition="{pub.pubstatus}==1">
+                            <f:else>
+                                <ph2:publicationStatus status="{pub.pubstatus}"/>
+                                <f:if condition="{pub.pubstatus}">,</f:if>
+                            </f:else>
+                        </f:if>
+
+                        <f:if condition="{pub.doi}">
+                            <f:then>
+                                <f:link.external uri="http://dx.doi.org/{pub.doi}"
+                                                 defaultScheme="http"
+                                                 target="_blank"
+                                                 class="journal">
+                                    <f:render partial="Journal" arguments="{pub: pub}"/>
+                                </f:link.external>
+                            </f:then>
+                            <f:else>
+                                <f:render partial="Journal" arguments="{pub: pub}"/>
+                            </f:else>
+                        </f:if>
+
+                        <f:if condition="{pub.url}">
+                            <span class="journallink">, <f:link.external uri="{pub.url}" target="_blank"
+                                                                         defaultScheme="http"><f:format.htmlentities>{pub.url}</f:format.htmlentities></f:link.external></span>
+                        </f:if>
+
+                        <f:if condition="{pub.oai}">
+                            <span class="arXiv">, <f:link.external uri="http://arxiv.org/abs/{v:format.replace(content: pub.oai, substring:'arXiv:', replacement:'')
+                                                                        -> v:format.replace(substring:'arXiv.org:', replacement:'')}">{pub.oai}</f:link.external></span>
+                        </f:if>
+
+                        <f:if condition="{pub.filesize}">
+                            <span class="pdf">, <f:link.external uri="http://webserver.ph2.uni-koeln.de/publications/?id={pub.id}">PDF (<v:math.round a="{v:math.division(a:pub.filesize, b:1024)}"/> kB)</f:link.external></span>
+                        </f:if>
+
+                    </v:format.eliminate>
+                </p>
+            </f:for>
+        </div>
+    </f:section>
+</div>
